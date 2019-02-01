@@ -1,5 +1,5 @@
 from sys import argv
-from random import randint
+from random import shuffle
 
 options = [ "Chick-fil-A",
          "H-mart",
@@ -33,14 +33,12 @@ def recommend(number_of_choices=1, places_to_choose_from=options):
 
     if (number_of_choices > length):
         return
-    
-    choices = set()
-    while(len(choices) < number_of_choices):    
-        choice = places_to_choose_from[randint(0, length)]
-        if choice not in choices:
-            choices.add(choice.title())
+
+    shuffle(places_to_choose_from)
+    choices = places_to_choose_from[0:number_of_choices]
 
     choices_lst = list(choices)
+    print(choices_lst)
     print("You should get food from %s" % ", ".join(choices_lst[:-2] + [", or ".join(choices_lst[-2:])]))
 
 if __name__ == "__main__":
