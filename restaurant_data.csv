@@ -1,0 +1,30 @@
+Name,Takeout,Distance (miles)
+Burlington Mall Food Court,TRUE,0.6
+H-mart,TRUE,1.8
+Five Guys,TRUE,1.7
+Panera Bread,TRUE,1.8
+Pressed,TRUE,0.1
+Black & Blue,FALSE,0.1
+Feng Shui,FALSE,0.1
+Chipotle,TRUE,0.2
+B.GOOD,TRUE,0.2
+Upper Crust,FALSE,0.2
+Qdoba,TRUE,1
+McDonald's,TRUE,1.4
+Tuscan Kitchen,FALSE,0.1
+Sichuan Gourmet,FALSE,0.7
+Blaze,FALSE,0.7
+Clover,TRUE,0.2
+Cheesecake Factory,FALSE,0.6
+Friendly Toast,FALSE,0.6
+Burger King,TRUE,1.5
+Border Café,FALSE,0.7
+Wegmans,TRUE,1
+Buffalo Wild Wings,FALSE,1
+Bamboo,FALSE,2.3
+Flatbread Co.,FALSE,2.4
+White Coconut,FALSE,1.5
+Legal Sea Foods,FALSE,0.6
+Tavern in the Square,FALSE,0.2
+Johnny Rockets,TRUE,1.1
+Wendy's,TRUE,0.6
