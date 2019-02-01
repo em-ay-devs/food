@@ -38,7 +38,6 @@ def recommend(number_of_choices=1, places_to_choose_from=options):
     choices = places_to_choose_from[0:number_of_choices]
 
     choices_lst = list(choices)
-    print(choices_lst)
     print("You should get food from %s" % ", ".join(choices_lst[:-2] + [", or ".join(choices_lst[-2:])]))
 
 if __name__ == "__main__":
