@@ -1,32 +1,32 @@
-Name,Takeout,Distance,Delivery
-B.GOOD,TRUE,0.2,FALSE
-Bamboo,FALSE,2.3,FALSE
-Black & Blue,FALSE,0.1,FALSE
-Blaze,FALSE,0.7,FALSE
-Border Café,FALSE,0.7,FALSE
-Buffalo Wild Wings,FALSE,1,TRUE
-Burger King,TRUE,1.5,FALSE
-Burlington Mall Food Court,TRUE,0.6,FALSE
-Cheesecake Factory,FALSE,0.6,FALSE
-Chipotle,TRUE,0.2,FALSE
-Clover,TRUE,0.2,FALSE
-Country Bistro,TRUE,4,TRUE
-Feng Shui,TRUE,0.1,TRUE
-Five Guys,TRUE,1.7,FALSE
-Flatbread Co.,FALSE,2.4,TRUE
-Friendly Toast,FALSE,0.6,FALSE
-Gourmet India,TRUE,0.6,FALSE
-H-mart,TRUE,1.8,FALSE
-Johnny Rockets,TRUE,1.1,FALSE
-McDonald's,TRUE,1.4,FALSE
-Panera Bread,TRUE,1.8,FALSE
-Pressed,TRUE,0.1,FALSE
-Qdoba,TRUE,1,TRUE
-Royal India Bistro,TRUE,3.7,TRUE
-Sichuan Gourmet,FALSE,0.7,FALSE
-Tavern in the Square,FALSE,0.2,FALSE
-Tuscan Kitchen,FALSE,0.1,FALSE
-Upper Crust,TRUE,0.2,TRUE
-Wegmans,TRUE,1,FALSE
-Wendy's,TRUE,0.6,FALSE
-White Coconut,FALSE,1.5,FALSE
+Name,Takeout,Distance,Delivery,Price
+B.GOOD,TRUE,0.2,FALSE,$
+Bamboo,FALSE,2.3,FALSE,$$
+Black & Blue,FALSE,0.1,FALSE,$$$$
+Blaze,FALSE,0.7,FALSE,$
+Border Café,FALSE,0.7,FALSE,$$
+Buffalo Wild Wings,FALSE,1,TRUE,$$
+Burger King,TRUE,1.5,FALSE,$
+Burlington Mall Food Court,TRUE,0.6,FALSE,$
+Cheesecake Factory,FALSE,0.6,FALSE,$$$
+Chipotle,TRUE,0.2,FALSE,$
+Clover,TRUE,0.2,FALSE,$
+3 Country Bistro,TRUE,4,TRUE,$$
+Feng Shui,TRUE,0.1,TRUE,$$
+Five Guys,TRUE,1.7,FALSE,$
+Flatbread Co.,FALSE,2.4,TRUE,$$
+Friendly Toast,FALSE,0.6,FALSE,$$
+Gourmet India,TRUE,0.6,FALSE,$$
+H-mart,TRUE,1.8,FALSE,$$
+Johnny Rockets,TRUE,1.1,FALSE,$
+McDonald's,TRUE,1.4,FALSE,$
+Panera Bread,TRUE,1.8,FALSE,$
+Pressed,TRUE,0.1,FALSE,$$
+Qdoba,TRUE,1,TRUE,$
+Royal India Bistro,TRUE,3.7,TRUE,$$
+Sichuan Gourmet,FALSE,0.7,FALSE,$$
+Tavern in the Square,FALSE,0.2,FALSE,$$
+Tuscan Kitchen,FALSE,0.1,FALSE,$$
+Upper Crust,TRUE,0.2,TRUE,$
+Wegmans,TRUE,1,FALSE,$
+Wendy's,TRUE,0.6,FALSE,$
+White Coconut,FALSE,1.5,FALSE,$$
