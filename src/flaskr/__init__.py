@@ -24,14 +24,17 @@ def create_app(test_config=None):
     def about():
         return 'TODO'
 
-    @app.route('/choose', methods=['GET', 'POST'])
-    def choose():
+    @app.route('/challenge', methods=['POST'])
+    def challenge():
         # Slack requires URL verification by returning a challenge string found in the request
         challenge_str = request.json['challenge'] if 'challenge' in request.json else ''
+        return challenge_str
+
+    @app.route('/choose', methods=['GET', 'POST'])
+    def choose():
         # gets the name of each recommendation object and puts them all in a list
         recommendations = [x['name'] for x in recommend.make_recommendations()]
         res_data = {
-            'challenge': challenge_str,
             'recommendations': recommendations
         }
         res = Response(json.dumps(res_data), status=200, content_type='application/json')
