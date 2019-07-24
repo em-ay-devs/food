@@ -1,12 +1,16 @@
 import os
 import json
 from flask import Flask, Response, request
-from src.lib.Recommend import Recommend
+from threading import Thread
+from src.lib.SlackClient import SlackClient
+
+
+def create_successful_response(res_data, status_code):
+    return Response(json.dumps(res_data), status=status_code, content_type='application/json')
 
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    recommend = Recommend()
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
     else:
@@ -28,16 +32,54 @@ def create_app(test_config=None):
     def challenge():
         # Slack requires URL verification by returning a challenge string found in the request
         challenge_str = request.json['challenge'] if 'challenge' in request.json else ''
-        return challenge_str
-
-    @app.route('/choose', methods=['GET', 'POST'])
-    def choose():
-        # gets the name of each recommendation object and puts them all in a list
-        recommendations = [x['name'] for x in recommend.make_recommendations()]
         res_data = {
-            'recommendations': recommendations
+            'challenge': challenge_str
         }
-        res = Response(json.dumps(res_data), status=200, content_type='application/json')
-        return res
+        return create_successful_response(res_data, 200)
+
+    @app.route('/choose', methods=['GET'])
+    def choose():
+        slack_client = SlackClient()
+        num_choices = request.args.get('options', default=3, type=int)
+        res_data = {
+            'recommendations': slack_client.get_recommendations(num_choices)
+        }
+        return create_successful_response(res_data, 200)
+
+    @app.route('/slack-choose', methods=['POST'])
+    def slack_choose():
+        payload = request.form.to_dict()
+
+        if ('token' or 'channel_id' or 'response_url') not in payload:
+            error_str = 'You\'re not Slack. Use the /choose route instead.'
+            return Response(error_str, status=403, content_type='text/plain')
+
+        slack_client = SlackClient()
+        command = {
+            'command': payload['command'],
+            'text': payload['text']
+        }
+        format_check = slack_client.check_command_format(command)
+        if not format_check['valid']:
+            res_data = {
+                'response_type': format_check['response_type'],
+                'text': format_check['message']
+            }
+            return create_successful_response(res_data, 200)
+
+        # creates a thread to process the incoming slash command after returning the immediate acknowledgement
+        thread = Thread(target=slack_client.process_slash_command, args=(payload,))
+        thread.start()
+
+        res_data = {
+            'response_type': 'in_channel'
+        }
+        # returns a response with HTTP status code 202 to indicate that the message has been accepted but still
+        # processing
+        return create_successful_response(res_data, 202)
+
+    @app.route('/one-choice-above-them-all', methods=['GET'])
+    def one_choice():
+        return Response('You should eat at Wegmans!', status=200, content_type='text/plain')
 
     return app

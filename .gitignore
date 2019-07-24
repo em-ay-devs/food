@@ -4,3 +4,6 @@ venv/
 .DS_Store
 .env
 *.pyc
+*.env
+*.tar
+deploy.sh

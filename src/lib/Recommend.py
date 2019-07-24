@@ -36,11 +36,16 @@ class Recommend:
                     line_count += 1
         return options
 
+    def get_options(self):
+        return self.options
+
     # Randomly selects a given number of recommendations for food places. By default, returns a list with 3
     # recommendations.
     def make_recommendations(self, num_choices=3):
         # makes a shallow copy of the options member variable
         remaining_options = copy(self.options)
+        if num_choices > len(remaining_options):
+            return []
         recommendations = []
         for x in range(num_choices):
             chosen_option = remaining_options[randint(0, len(remaining_options) - 1)]
