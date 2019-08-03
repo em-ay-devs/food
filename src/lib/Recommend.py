@@ -1,9 +1,9 @@
-import os.path
+from os import pardir, path
 from csv import DictReader
 from random import randint
 from copy import copy
 
-CSV_FILE = os.path.abspath('src/configs/restaurant_data.csv')
+CSV_FILE = path.join(path.dirname(__file__), pardir, 'configs/restaurant_data.csv')
 
 
 class Recommend:
@@ -21,19 +21,16 @@ class Recommend:
             reader = DictReader(csv_file)
             line_count = 0
             for row in reader:
-                if line_count == 0:
-                    line_count += 1
-                else:
-                    # dictionary object with the column headers in the CSV file
-                    option = {
-                        'name': row['Name'],
-                        'takeout': row['Takeout'],
-                        'delivery': row['Delivery'],
-                        'distance': row['Distance'],
-                        'price': row['Price']
-                    }
-                    options.append(option)
-                    line_count += 1
+                # dictionary object with the column headers in the CSV file
+                option = {
+                    'name': row['Name'],
+                    'takeout': row['Takeout'],
+                    'delivery': row['Delivery'],
+                    'distance': row['Distance'],
+                    'price': row['Price']
+                }
+                options.append(option)
+                line_count += 1
         return options
 
     def get_options(self):

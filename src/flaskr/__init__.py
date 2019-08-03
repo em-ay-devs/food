@@ -22,11 +22,11 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-        return 'Hello World!'
+        return Response('Hello World!', status=200, content_type='text/plain')
 
     @app.route('/about')
     def about():
-        return 'TODO'
+        return Response('TODO', status=200, content_type='text/plain')
 
     @app.route('/challenge', methods=['POST'])
     def challenge():

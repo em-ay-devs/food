@@ -26,9 +26,7 @@ class SlackClient:
             'Content-Type': 'application/json'
         }
         res = requests.post(url=res_url, data=json.dumps(req_data), headers=headers)
-        if res.status_code == 200:
-            print('Response:', res)
-            return
+        return res
 
     def get_recommendations(self, num_choices, string_format=False):
         """
@@ -127,9 +125,8 @@ class SlackClient:
         # the token received in payload should match the app's Slack verification token
         if token != os.getenv('SLACK_VERIFICATION_TOKEN'):
             message = 'Hmmm it appears you have the wrong token...'
-            response_type = self.ERROR_RESPONSE_TYPE,
-
-        if 'recommend' in payload['text'].lower() and len(payload['text'].split(' ')) == 2:
+            response_type = self.ERROR_RESPONSE_TYPE
+        elif 'recommend' in payload['text'].lower() and len(payload['text'].split(' ')) == 2:
             num_choices = int(payload['text'].split(' ')[1])
             # gets a string of the recommendations list
             recommendations = self.get_recommendations(num_choices, True)
@@ -157,4 +154,4 @@ class SlackClient:
             ]
         }
         self.post_slack_message(res_data, res_url)
-        return
+        return res_data
