@@ -1,4 +1,7 @@
 # food
+
+[![CircleCI](https://circleci.com/gh/em-ay-devs/food.svg?style=svg)](https://circleci.com/gh/em-ay-devs/food)
+
 A service for helping Connexta developers at the MA office with the very difficult task of deciding on a place to get lunch from 😵🤕.
 
 ## Usage
@@ -15,3 +18,10 @@ By default, the service will run on port `5000`. To make the service accessible 
         ```bash
         docker stop food
         ```
+        
+## Testing
+
+Unit tests are located in the `tests/` directory. To execute only the tests and get the results, simply run `pytest` in your terminal. If you want a more detailed output with coverage measurements, run the following:
+```bash
+pytest -v --cov-report term --cov=src tests/
+```
