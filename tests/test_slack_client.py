@@ -1,6 +1,9 @@
 import pytest
-from os import getenv
+from os import getenv, pardir, path
+from dotenv import load_dotenv
 from src.lib.SlackClient import SlackClient
+
+load_dotenv(dotenv_path=path.join(path.dirname(__file__), pardir, 'src/configs/.env'))
 
 
 class TestSlackClient:
