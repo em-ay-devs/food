@@ -44,6 +44,7 @@ jobs:
       - run:
           name: run tests
           command: |
+            echo "SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}" >> src/configs/.env
             . venv/bin/activate
             pytest -v --cov-report term --cov=src tests/
 
