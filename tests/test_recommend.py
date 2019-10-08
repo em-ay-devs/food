@@ -24,7 +24,7 @@ class TestRecommend:
 
     def test_get_options(self, recommend):
         options = recommend.get_options()
-        assert len(options) == 31
+        assert len(options) == 30
         assert options[0]['name'] == 'B.GOOD'
 
     def test_make_recommendations(self, recommend):
