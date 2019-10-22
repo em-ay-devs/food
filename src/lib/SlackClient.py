@@ -83,7 +83,7 @@ class SlackClient:
                 price = command['text'].count('$')
                 MAX_PRICE_RANGE = 5
                 if price > MAX_PRICE_RANGE:
-                    message = f'Error: User is too affluent for this bot (max $'s is `MAX_PRICE_RANGE`)'
+                    message = f'Error: User is too affluent for this bot (max $\'s is `MAX_PRICE_RANGE`)'
                     is_valid = False
             else:
                 message = 'Sorry, I can\'t recognize that command 🤷🏻. Try something like `/lunch recommend 3`.'
