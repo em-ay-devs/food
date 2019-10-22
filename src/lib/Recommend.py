@@ -38,13 +38,16 @@ class Recommend:
 
     # Randomly selects a given number of recommendations for food places. By default, returns a list with 3
     # recommendations.
-    def make_recommendations(self, num_choices=3):
+    def make_recommendations(self, num_choices=3, price=None):
         # makes a shallow copy of the options member variable
-        remaining_options = copy(self.options)
-        if num_choices > len(remaining_options):
-            return []
+        if price and price > 0:
+            remaining_options = list(filter(lambda x: len(x['price']) == price, self.options))
+        else:
+            remaining_options = copy(self.options)
+
         recommendations = []
-        for x in range(num_choices):
+        options_count = min(num_choices, len(remaining_options))
+        for x in range(options_count):
             chosen_option = remaining_options[randint(0, len(remaining_options) - 1)]
             recommendations.append(chosen_option)
             # removes the chosen option from the list so it won't be picked again on further iterations

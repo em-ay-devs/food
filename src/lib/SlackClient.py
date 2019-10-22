@@ -28,17 +28,18 @@ class SlackClient:
         res = requests.post(url=res_url, data=json.dumps(req_data), headers=headers)
         return res
 
-    def get_recommendations(self, num_choices, string_format=False):
+    def get_recommendations(self, num_choices, price=None, string_format=False):
         """
         Returns either a list object containing the recommendations or a string version of that list.
 
         :param num_choices: the number of choices to return
+        :param price: price range of restaurant as an int
         :param string_format: the flag for whether or not to return a string
         :return: a list object or string of the random recommendations
         """
 
         # gets the name of each recommendation object and puts them all in a list
-        recommendations = [x['name'] for x in self.recommend.make_recommendations(num_choices)]
+        recommendations = [x['name'] for x in self.recommend.make_recommendations(num_choices, price)]
         recommendations_str = ', '.join(recommendations)
         return recommendations if not string_format else recommendations_str
 
@@ -77,6 +78,13 @@ class SlackClient:
                 except ValueError:
                     message = f'`{num_choices}` isn\'t a valid number 🙄. Try again pls.'
                     response_type = self.ERROR_RESPONSE_TYPE
+
+                # check that price range is valid
+                price = command['text'].count('$')
+                MAX_PRICE_RANGE = 5
+                if price > MAX_PRICE_RANGE:
+                    message = f'Error: User is too affluent for this bot (max $'s is `MAX_PRICE_RANGE`)'
+                    is_valid = False
             else:
                 message = 'Sorry, I can\'t recognize that command 🤷🏻. Try something like `/lunch recommend 3`.'
                 response_type = self.ERROR_RESPONSE_TYPE
@@ -128,8 +136,9 @@ class SlackClient:
             response_type = self.ERROR_RESPONSE_TYPE
         elif 'recommend' in payload['text'].lower() and len(payload['text'].split(' ')) == 2:
             num_choices = int(payload['text'].split(' ')[1])
+            price = command['text'].count('$')
             # gets a string of the recommendations list
-            recommendations = self.get_recommendations(num_choices, True)
+            recommendations = self.get_recommendations(num_choices, price, True)
             if num_choices == 1:
                 message = f'As a _world-renowned_ chef, I personally recommend `{recommendations}`. Enjoy!'
             else:
