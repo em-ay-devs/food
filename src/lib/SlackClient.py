@@ -10,6 +10,8 @@ class SlackClient:
     ERROR_RESPONSE_TYPE = 'ephemeral'
     recommend = None
 
+    MAX_PRICE_RANGE = 5
+
     def __init__(self):
         self.recommend = Recommend()
 
@@ -81,7 +83,6 @@ class SlackClient:
 
                 # check that price range is valid
                 price = command['text'].count('$')
-                MAX_PRICE_RANGE = 5
                 if price > MAX_PRICE_RANGE:
                     message = f'Error: User is too affluent for this bot (max $\'s is `MAX_PRICE_RANGE`)'
                     is_valid = False
