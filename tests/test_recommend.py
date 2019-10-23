@@ -24,8 +24,11 @@ class TestRecommend:
 
     def test_get_options(self, recommend):
         options = recommend.get_options()
-        assert len(options) == 31
-        assert options[0]['name'] == 'B.GOOD'
+        assert options[0]['name']
+        assert options[0]['takeout']
+        assert options[0]['delivery']
+        assert options[0]['distance']
+        assert options[0]['price']
 
     def test_make_recommendations(self, recommend):
         default_recommendations = recommend.make_recommendations()
@@ -33,9 +36,11 @@ class TestRecommend:
         assert 'name' in default_recommendations[1]
         assert 'price' in default_recommendations[2]
 
-    def test_make_recommendations_too_high(self, recommend):
+    # asking for more recommendations than available will return all options
+    def test_make_recommendations_exceeds_options(self, recommend):
+        total_options = len(recommend.get_options())
         recommendations = recommend.make_recommendations(100)
-        assert len(recommendations) == 0
+        assert len(recommendations) == total_options
 
     def test_make_recommendations_negative(self, recommend):
         recommendations = recommend.make_recommendations(-10)

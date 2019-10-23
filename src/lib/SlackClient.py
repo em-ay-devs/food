@@ -83,7 +83,7 @@ class SlackClient:
 
                 # check that price range is valid
                 price = command['text'].count('$')
-                if price > MAX_PRICE_RANGE:
+                if price > self.MAX_PRICE_RANGE:
                     message = f'Error: User is too affluent for this bot (max $\'s is `MAX_PRICE_RANGE`)'
                     is_valid = False
             else:
@@ -137,7 +137,7 @@ class SlackClient:
             response_type = self.ERROR_RESPONSE_TYPE
         elif 'recommend' in payload['text'].lower() and len(payload['text'].split(' ')) == 2:
             num_choices = int(payload['text'].split(' ')[1])
-            price = command['text'].count('$')
+            price = payload['text'].count('$')
             # gets a string of the recommendations list
             recommendations = self.get_recommendations(num_choices, price, True)
             if num_choices == 1:
