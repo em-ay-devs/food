@@ -45,3 +45,8 @@ class TestRecommend:
     def test_make_recommendations_negative(self, recommend):
         recommendations = recommend.make_recommendations(-10)
         assert len(recommendations) == 0
+
+    def test_make_recommendations_with_price(self, recommend):
+        recommendations = recommend.make_recommendations(price=1)
+        if recommendations:
+            assert recommendations[0]['price'] == '$'

@@ -62,6 +62,19 @@ class TestFlaskr:
         assert res.content_type == 'application/json'
         assert loads(res.data.decode('UTF-8'))['response_type'] == 'in_channel'
 
+    def test_post_slack_choose_price_range(self, client):
+        req_data = {
+            'token': getenv('SLACK_VERIFICATION_TOKEN'),
+            'channel_id': 'a_slack_channel_id',
+            'response_url': 'https://example.com',
+            'command': '/lunch',
+            'text': 'recommend 3 $$$'
+        }
+        res = client.post('/slack-choose', data=req_data, follow_redirects=True)
+        assert res.status_code == 202
+        assert res.content_type == 'application/json'
+        assert loads(res.data.decode('UTF-8'))['response_type'] == 'in_channel'
+
     def test_post_slack_choose_invalid_payload(self, client):
         req_data = {
             'command': '/lunch',
