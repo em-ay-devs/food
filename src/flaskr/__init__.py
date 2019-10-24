@@ -41,8 +41,9 @@ def create_app(test_config=None):
     def choose():
         slack_client = SlackClient()
         num_choices = request.args.get('options', default=3, type=int)
+        price_range = request.args.get('price', default=None, type=int)
         res_data = {
-            'recommendations': slack_client.get_recommendations(num_choices)
+            'recommendations': slack_client.get_recommendations(num_choices, price_range)
         }
         return create_successful_response(res_data, 200)
 

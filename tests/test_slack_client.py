@@ -63,7 +63,16 @@ class TestSlackClient:
         }
         format_check = slack_client.check_command_format(command)
         assert format_check.keys() >= {'valid', 'message', 'response_type'}
-        assert format_check['valid'] == True
+        assert format_check['valid']
+
+    def test_check_command_price_only(self, slack_client):
+        command = {
+            'command': '/lunch',
+            'text': 'recommend $$'
+        }
+        format_check = slack_client.check_command_format(command)
+        assert format_check.keys() >= {'valid', 'message', 'response_type'}
+        assert format_check['valid']
 
     def test_check_command_format_invalid_command(self):
         command = {
@@ -77,21 +86,22 @@ class TestSlackClient:
             'command': '/lunch',
             'text': 'foo 3'
         }
-        self.invalid_command_helper(command, 'Sorry, I can\'t recognize that command 🤷🏻. Try something like `/lunch recommend 3`.')
+        self.invalid_command_helper(command,
+                                    'Sorry, I can\'t recognize that command 🤷🏻. Try something like `/lunch recommend 3`.')
 
     def test_check_command_format_invalid_command_text_length(self):
         command = {
             'command': '/lunch',
             'text': 'recommend foo 3'
         }
-        self.invalid_command_helper(command, 'Sorry, I can\'t recognize that command 🤷🏻. Try something like `/lunch recommend 3`.')
+        self.invalid_command_helper(command, '`foo` isn\'t a valid argument 🙄. Try again pls.')
 
     def test_check_command_format_nan(self):
         command = {
             'command': '/lunch',
             'text': 'recommend foo'
         }
-        self.invalid_command_helper(command, 'isn\'t a valid number 🙄. Try again pls.')
+        self.invalid_command_helper(command, 'isn\'t a valid argument 🙄. Try again pls.')
 
     def test_check_command_format_negative_number(self):
         command = {
@@ -113,7 +123,8 @@ class TestSlackClient:
             'response_url': 'https://example.com',
             'text': 'recommend 1'
         }
-        self.process_slash_command_helper(payload, SlackClient.SUCCESS_RESPONSE_TYPE, 'As a _world-renowned_ chef, I personally recommend')
+        self.process_slash_command_helper(payload, SlackClient.SUCCESS_RESPONSE_TYPE,
+                                          'As a _world-renowned_ chef, I personally recommend')
 
     def test_process_slash_command_multiple_options(self):
         payload = {
@@ -121,7 +132,8 @@ class TestSlackClient:
             'response_url': 'https://example.com',
             'text': 'recommend 3'
         }
-        self.process_slash_command_helper(payload, SlackClient.SUCCESS_RESPONSE_TYPE, 'As a _world-renowned_ chef, here are my top')
+        self.process_slash_command_helper(payload, SlackClient.SUCCESS_RESPONSE_TYPE,
+                                          'As a _world-renowned_ chef, here are my top')
 
     def test_process_slash_command_invalid_token(self):
         payload = {
@@ -129,7 +141,8 @@ class TestSlackClient:
             'response_url': 'https://example.com',
             'text': 'recommend 3'
         }
-        self.process_slash_command_helper(payload, SlackClient.ERROR_RESPONSE_TYPE, 'Hmmm it appears you have the wrong token...')
+        self.process_slash_command_helper(payload, SlackClient.ERROR_RESPONSE_TYPE,
+                                          'Hmmm it appears you have the wrong token...')
 
     def test_process_slash_command_invalid_command_text(self):
         payload = {

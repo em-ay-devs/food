@@ -10,6 +10,8 @@ class SlackClient:
     ERROR_RESPONSE_TYPE = 'ephemeral'
     recommend = None
 
+    MAX_PRICE_RANGE = 5
+
     def __init__(self):
         self.recommend = Recommend()
 
@@ -28,17 +30,18 @@ class SlackClient:
         res = requests.post(url=res_url, data=json.dumps(req_data), headers=headers)
         return res
 
-    def get_recommendations(self, num_choices, string_format=False):
+    def get_recommendations(self, num_choices, price=None, string_format=False):
         """
         Returns either a list object containing the recommendations or a string version of that list.
 
         :param num_choices: the number of choices to return
+        :param price: price range of restaurant as an int
         :param string_format: the flag for whether or not to return a string
         :return: a list object or string of the random recommendations
         """
 
         # gets the name of each recommendation object and puts them all in a list
-        recommendations = [x['name'] for x in self.recommend.make_recommendations(num_choices)]
+        recommendations = [x['name'] for x in self.recommend.make_recommendations(num_choices, price)]
         recommendations_str = ', '.join(recommendations)
         return recommendations if not string_format else recommendations_str
 
@@ -54,38 +57,51 @@ class SlackClient:
 
         message = ''
         response_type = ''
-        is_valid = False
+        is_invalid = False
 
         # the slash command wouldn't even be triggered without the "/lunch" but let's just do a sanity check
         if command['command'] == '/lunch':
-            # app mention text should be in format: "recommend N", where N is the number of choices to return
-            if 'recommend' in command['text'].lower() and len(command['text'].split(' ')) == 2:
-                num_choices = command['text'].split(' ')[1]
+            # app mention text should be in format: "recommend N P", where N is the number of choices to return and P
+            # is price range
+            if 'recommend' in command['text'].lower() and len(command['text'].split(' ')) >= 2:
+                # price should still be assignable even when number of choices isn't
+                first_arg = command['text'].split(' ')[1]
+
                 try:
-                    num_choices = int(num_choices)
+                    num_choices = int(first_arg)
                     if num_choices <= 0:
                         # 0 or negative integer given
                         message = 'Nice try 😛. Use a valid number next time.'
                         response_type = self.ERROR_RESPONSE_TYPE
+                        is_invalid = True
                     elif num_choices > len(self.recommend.get_options()):
                         # integer greater than the number of available options given
                         message = 'Sorry, your number is too big 🤷🏻. Try something more reasonable.'
                         response_type = self.ERROR_RESPONSE_TYPE
-                    else:
-                        is_valid = True
-                # thrown if parsing an int from num_choices fails
+                        is_invalid = True
                 except ValueError:
-                    message = f'`{num_choices}` isn\'t a valid number 🙄. Try again pls.'
-                    response_type = self.ERROR_RESPONSE_TYPE
+                    if first_arg != len(first_arg) * '$':
+                        # thrown if parsing an unrecognized argument from num_choices fails
+                        message = f'`{first_arg}` isn\'t a valid argument 🙄. Try again pls.'
+                        response_type = self.ERROR_RESPONSE_TYPE
+                        is_invalid = True
+
+                # check that price range is valid
+                price = command['text'].count('$')
+                if price > self.MAX_PRICE_RANGE:
+                    message = f'Error: User is too affluent for this bot (max $\'s is `MAX_PRICE_RANGE`)'
+                    is_invalid = True
             else:
                 message = 'Sorry, I can\'t recognize that command 🤷🏻. Try something like `/lunch recommend 3`.'
                 response_type = self.ERROR_RESPONSE_TYPE
+                is_invalid = True
         else:
             message = 'Sorry, I don\'t understand. Pls fix.'
             response_type = self.ERROR_RESPONSE_TYPE
+            is_invalid = True
 
         return {
-            'valid': is_valid,
+            'valid': not is_invalid,
             'message': message,
             'response_type': response_type
         }
@@ -128,8 +144,9 @@ class SlackClient:
             response_type = self.ERROR_RESPONSE_TYPE
         elif 'recommend' in payload['text'].lower() and len(payload['text'].split(' ')) == 2:
             num_choices = int(payload['text'].split(' ')[1])
+            price = payload['text'].count('$')
             # gets a string of the recommendations list
-            recommendations = self.get_recommendations(num_choices, True)
+            recommendations = self.get_recommendations(num_choices, price, True)
             if num_choices == 1:
                 message = f'As a _world-renowned_ chef, I personally recommend `{recommendations}`. Enjoy!'
             else:
