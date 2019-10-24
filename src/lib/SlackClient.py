@@ -57,44 +57,51 @@ class SlackClient:
 
         message = ''
         response_type = ''
-        is_valid = False
+        is_invalid = False
 
         # the slash command wouldn't even be triggered without the "/lunch" but let's just do a sanity check
         if command['command'] == '/lunch':
-            # app mention text should be in format: "recommend N", where N is the number of choices to return
-            if 'recommend' in command['text'].lower() and len(command['text'].split(' ')) == 2:
-                num_choices = command['text'].split(' ')[1]
+            # app mention text should be in format: "recommend N P", where N is the number of choices to return and P
+            # is price range
+            if 'recommend' in command['text'].lower() and len(command['text'].split(' ')) >= 2:
+                # price should still be assignable even when number of choices isn't
+                first_arg = command['text'].split(' ')[1]
+
                 try:
-                    num_choices = int(num_choices)
+                    num_choices = int(first_arg)
                     if num_choices <= 0:
                         # 0 or negative integer given
                         message = 'Nice try 😛. Use a valid number next time.'
                         response_type = self.ERROR_RESPONSE_TYPE
+                        is_invalid = True
                     elif num_choices > len(self.recommend.get_options()):
                         # integer greater than the number of available options given
                         message = 'Sorry, your number is too big 🤷🏻. Try something more reasonable.'
                         response_type = self.ERROR_RESPONSE_TYPE
-                    else:
-                        is_valid = True
-                # thrown if parsing an int from num_choices fails
+                        is_invalid = True
                 except ValueError:
-                    message = f'`{num_choices}` isn\'t a valid number 🙄. Try again pls.'
-                    response_type = self.ERROR_RESPONSE_TYPE
+                    if first_arg is not len(first_arg) * '$':
+                        # thrown if parsing an unrecognized argument from num_choices fails
+                        message = f'`{first_arg}` isn\'t a valid argument 🙄. Try again pls.'
+                        response_type = self.ERROR_RESPONSE_TYPE
+                        is_invalid = True
 
                 # check that price range is valid
                 price = command['text'].count('$')
                 if price > self.MAX_PRICE_RANGE:
                     message = f'Error: User is too affluent for this bot (max $\'s is `MAX_PRICE_RANGE`)'
-                    is_valid = False
+                    is_invalid = True
             else:
                 message = 'Sorry, I can\'t recognize that command 🤷🏻. Try something like `/lunch recommend 3`.'
                 response_type = self.ERROR_RESPONSE_TYPE
+                is_invalid = True
         else:
             message = 'Sorry, I don\'t understand. Pls fix.'
             response_type = self.ERROR_RESPONSE_TYPE
+            is_invalid = True
 
         return {
-            'valid': is_valid,
+            'valid': not is_invalid,
             'message': message,
             'response_type': response_type
         }

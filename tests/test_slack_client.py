@@ -84,14 +84,14 @@ class TestSlackClient:
             'command': '/lunch',
             'text': 'recommend foo 3'
         }
-        self.invalid_command_helper(command, 'Sorry, I can\'t recognize that command 🤷🏻. Try something like `/lunch recommend 3`.')
+        self.invalid_command_helper(command, '`foo` isn\'t a valid argument 🙄. Try again pls.')
 
     def test_check_command_format_nan(self):
         command = {
             'command': '/lunch',
             'text': 'recommend foo'
         }
-        self.invalid_command_helper(command, 'isn\'t a valid number 🙄. Try again pls.')
+        self.invalid_command_helper(command, 'isn\'t a valid argument 🙄. Try again pls.')
 
     def test_check_command_format_negative_number(self):
         command = {
