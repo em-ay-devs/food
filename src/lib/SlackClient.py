@@ -80,7 +80,7 @@ class SlackClient:
                         response_type = self.ERROR_RESPONSE_TYPE
                         is_invalid = True
                 except ValueError:
-                    if first_arg is not len(first_arg) * '$':
+                    if first_arg != len(first_arg) * '$':
                         # thrown if parsing an unrecognized argument from num_choices fails
                         message = f'`{first_arg}` isn\'t a valid argument 🙄. Try again pls.'
                         response_type = self.ERROR_RESPONSE_TYPE
