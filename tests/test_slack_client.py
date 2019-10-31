@@ -31,7 +31,7 @@ class TestSlackClient:
         slack_client = SlackClient()
         format_check = slack_client.check_command_format(command)
         assert format_check.keys() >= {'valid', 'message', 'response_type'}
-        assert format_check['valid'] == False
+        assert format_check['valid'] is False
         assert format_check['response_type'] == SlackClient.ERROR_RESPONSE_TYPE
         assert error_msg in format_check['message']
 
@@ -63,7 +63,14 @@ class TestSlackClient:
         }
         format_check = slack_client.check_command_format(command)
         assert format_check.keys() >= {'valid', 'message', 'response_type'}
-        assert format_check['valid'] == True
+        assert format_check['valid'] is True
+
+    def test_check_command_help(self, slack_client):
+        command = {
+            'command': '/lunch',
+            'text': 'help'
+        }
+        self.invalid_command_helper(command, 'An example usage would be')
 
     def test_check_command_format_invalid_command(self):
         command = {

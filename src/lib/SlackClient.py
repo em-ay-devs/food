@@ -58,8 +58,14 @@ class SlackClient:
 
         # the slash command wouldn't even be triggered without the "/lunch" but let's just do a sanity check
         if command['command'] == '/lunch':
+            if 'help' in command['text'].lower():
+                message = 'Chef Emay helps you decide on a lunch place based on a set list of available options ' \
+                          'nearby!\nAn example usage would be `/lunch recommend 3`. This will return a list of 3 ' \
+                          'randomly selected food locations.'
+                # not technically an error but we want to keep the message private to only the user
+                response_type = self.ERROR_RESPONSE_TYPE
             # app mention text should be in format: "recommend N", where N is the number of choices to return
-            if 'recommend' in command['text'].lower() and len(command['text'].split(' ')) == 2:
+            elif 'recommend' in command['text'].lower() and len(command['text'].split(' ')) == 2:
                 num_choices = command['text'].split(' ')[1]
                 try:
                     num_choices = int(num_choices)
