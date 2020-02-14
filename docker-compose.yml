@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+  web:
+    image: em-ay-devs-food
+    hostname: em-ay-devs-food
+    ports:
+      - target: 5000
+        published: 5050
+        mode: tcp
+    depends_on:
+      - mongo
+    networks:
+      - food
+
+  mongo:
+    image: mongo:4.1
+    hostname: mongo
+    restart: always
+    ports:
+      - target: 27017
+        published: 27017
+        protocol: tcp
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "root"
+      MONGO_DATA_DIR: db-volume
+      MONGO_LOG_DIR: /dev/null
+    volumes:
+      - type: volume
+        source: db-volume
+        target: /data/db
+    networks:
+      - food
+    command: mongod
+
+volumes:
+  db-volume:
+
+networks:
+  food:
