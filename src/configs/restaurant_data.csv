@@ -1,31 +1,36 @@
-Name,Takeout,Distance,Delivery,Price
-B.GOOD,TRUE,0.2,FALSE,$
-Bamboo,FALSE,2.3,FALSE,$$
-Black & Blue,FALSE,0.1,FALSE,$$$$
-Blaze,FALSE,0.7,FALSE,$
-Border Café,FALSE,0.7,FALSE,$$
-Burger King,TRUE,1.5,FALSE,$
-Burlington Mall Food Court,TRUE,0.6,FALSE,$
-Cheesecake Factory,FALSE,0.6,FALSE,$$$
-Chipotle,TRUE,0.2,FALSE,$
-Clover,TRUE,0.2,FALSE,$
-3 Country Bistro,TRUE,4,TRUE,$$
-Eddie V's,FALSE,1.1,FALSE,$$$$
-Feng Shui,TRUE,0.1,TRUE,$$
-Five Guys,TRUE,1.7,FALSE,$
-Flatbread Co.,FALSE,2.4,TRUE,$$
-Friendly Toast,FALSE,0.6,FALSE,$$
-Gourmet India,TRUE,0.6,FALSE,$$
-H-mart,TRUE,1.8,FALSE,$$
-Johnny Rockets,TRUE,1.1,FALSE,$
-McDonald's,TRUE,1.4,FALSE,$
-Panera Bread,TRUE,1.8,FALSE,$
-Pressed,TRUE,0.1,FALSE,$$
-Royal India Bistro,TRUE,3.7,TRUE,$$
-Sichuan Gourmet,FALSE,0.7,FALSE,$$
-Tavern in the Square,FALSE,0.2,FALSE,$$
-Tuscan Kitchen,FALSE,0.1,FALSE,$$
-Upper Crust,TRUE,0.2,TRUE,$
-Wegmans,TRUE,1,FALSE,$
-Wendy's,TRUE,0.6,FALSE,$
-White Coconut,FALSE,1.5,FALSE,$$
+Name,Takeout,Distance,Delivery,Price,Weight
+B.GOOD,TRUE,0.2,FALSE,$,2
+Bamboo,FALSE,2.3,FALSE,$$,3
+Bedford House of Roast Beef,TRUE,5.7,FALSE,$,2
+Black & Blue,FALSE,0.1,FALSE,$$$$,1
+Blaze,TRUE,0.7,FALSE,$,3
+Border Café,FALSE,0.7,FALSE,$$,2
+Burger King,TRUE,1.5,FALSE,$,1
+Burlington Mall Food Court,TRUE,0.6,FALSE,$,4
+Caffè Nero,TRUE,0.9,FALSE,$,2
+Cheesecake Factory,FALSE,0.6,FALSE,$$$,1
+Chipotle,TRUE,0.2,FALSE,$,5
+Clover,TRUE,0.2,FALSE,$,2
+3 Country Bistro,TRUE,4,TRUE,$$,3
+Eddie V's,FALSE,1.1,FALSE,$$$$,1
+Feng Shui,TRUE,0.1,TRUE,$$,5
+Five Guys,TRUE,1.7,FALSE,$,4
+Flatbread Co.,FALSE,2.4,TRUE,$$,3
+Friendly Toast,FALSE,0.6,FALSE,$$,2
+Gene's Chinese Flatbread Cafe,TRUE,3.9,FALSE,$,2
+Gourmet India,TRUE,0.6,FALSE,$$,2
+Hanscom AFB,FALSE,7.2,FALSE,$,1
+H-mart,TRUE,1.8,FALSE,$$,4
+Johnny Rockets,TRUE,1.1,FALSE,$,1
+McDonald's,TRUE,1.4,FALSE,$,1
+Panera Bread,TRUE,1.8,FALSE,$,2
+Pressed,TRUE,0.1,FALSE,$$,4
+Royal India Bistro,TRUE,3.7,TRUE,$$,2
+Sichuan Gourmet,FALSE,0.7,FALSE,$$,2
+Tavern in the Square,FALSE,0.2,FALSE,$$,2
+Tuscan Kitchen,FALSE,0.1,FALSE,$$,1
+Upper Crust,TRUE,0.2,TRUE,$,3
+Wegmans,TRUE,1,FALSE,$,5
+Wendy's,TRUE,0.6,FALSE,$,1
+White Coconut,TRUE,1.5,FALSE,$$,3
+Wicked Bagel,TRUE,5.9,TRUE,$,2
