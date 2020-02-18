@@ -27,16 +27,16 @@ class TestRecommend:
         assert len(options) > 0
         assert options[0]['name'] == 'B.GOOD'
 
-    def test_make_recommendations(self, recommend):
-        default_recommendations = recommend.make_recommendations()
+    def test_get_recommendations(self, recommend):
+        default_recommendations = recommend.get_recommendations()
         assert len(default_recommendations) == 3
         assert 'name' in default_recommendations[1]
         assert 'price' in default_recommendations[2]
 
-    def test_make_recommendations_too_high(self, recommend):
-        recommendations = recommend.make_recommendations(100)
+    def test_get_recommendations_too_high(self, recommend):
+        recommendations = recommend.get_recommendations(100)
         assert len(recommendations) == 0
 
-    def test_make_recommendations_negative(self, recommend):
-        recommendations = recommend.make_recommendations(-10)
+    def test_get_recommendations_negative(self, recommend):
+        recommendations = recommend.get_recommendations(-10)
         assert len(recommendations) == 0
