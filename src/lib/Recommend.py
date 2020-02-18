@@ -1,7 +1,7 @@
 from os import pardir, path
 from csv import DictReader
 from random import randint
-from copy import copy
+from itertools import chain
 
 CSV_FILE = path.join(path.dirname(__file__), pardir, 'configs/restaurant_data.csv')
 
@@ -12,6 +12,24 @@ class Recommend:
 
     def __init__(self):
         self.options = self.read_csv()
+
+    def get_options(self):
+        return self.options
+
+    def get_recommendations(self, num_choices=3):
+        weighted_options = self.generate_weighted_list(self.options)
+        return self.__make_recommendations(weighted_options, num_choices, [])
+
+    # Randomly selects a given number of recommendations for food places.
+    def __make_recommendations(self, options, num_choices, selected):
+        if num_choices == 0:
+            # returns the selected options when the base case (zero number of choices) is reached
+            return selected
+        else:
+            remaining_options = list(filter(lambda x: x['name'] not in selected, options))
+            chosen_option = remaining_options[randint(0, len(remaining_options) - 1)]['name']
+            selected.append(chosen_option)
+            return self.__make_recommendations(options, num_choices - 1, selected)
 
     # Reads the CSV file, extracts all of the food options, and puts them into a list of dictionary objects.
     @staticmethod
@@ -26,27 +44,18 @@ class Recommend:
                     'name': row['Name'],
                     'takeout': row['Takeout'],
                     'delivery': row['Delivery'],
-                    'distance': row['Distance'],
-                    'price': row['Price']
+                    'distance': float(row['Distance']),
+                    'price': row['Price'],
+                    'weight': int(row['Weight'])
                 }
                 options.append(option)
                 line_count += 1
         return options
 
-    def get_options(self):
-        return self.options
-
-    # Randomly selects a given number of recommendations for food places. By default, returns a list with 3
-    # recommendations.
-    def make_recommendations(self, num_choices=3):
-        # makes a shallow copy of the options member variable
-        remaining_options = copy(self.options)
-        if num_choices > len(remaining_options):
-            return []
-        recommendations = []
-        for x in range(num_choices):
-            chosen_option = remaining_options[randint(0, len(remaining_options) - 1)]
-            recommendations.append(chosen_option)
-            # removes the chosen option from the list so it won't be picked again on further iterations
-            remaining_options.remove(chosen_option)
-        return recommendations
+    # Creates a weighted list using the 'weight' field from the given options list.
+    @staticmethod
+    def generate_weighted_list(options):
+        # maps each option to a list containing a number of duplicates based on the weight
+        mapped_weighted_options = [[x] * x['weight'] for x in options]
+        # returns a flattened list representing a "weighted" list of options
+        return list(chain.from_iterable(mapped_weighted_options))
