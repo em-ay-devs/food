@@ -38,7 +38,7 @@ class SlackClient:
         """
 
         # gets the name of each recommendation object and puts them all in a list
-        recommendations = self.recommend.get_recommendations(num_choices)
+        recommendations = [x['name'] for x in self.recommend.get_recommendations(num_choices)]
         recommendations_str = ', '.join(recommendations)
         return recommendations if not string_format else recommendations_str
 

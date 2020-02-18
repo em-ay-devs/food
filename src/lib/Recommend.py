@@ -17,8 +17,12 @@ class Recommend:
         return self.options
 
     def get_recommendations(self, num_choices=3):
-        weighted_options = self.generate_weighted_list(self.options)
-        return self.__make_recommendations(weighted_options, num_choices, [])
+        # only get recommendations if the number of choices is within the acceptable range
+        if 0 <= num_choices <= len(self.options):
+            weighted_options = self.generate_weighted_list(self.options)
+            return self.__make_recommendations(weighted_options, num_choices, [])
+        else:
+            return []
 
     # Randomly selects a given number of recommendations for food places.
     def __make_recommendations(self, options, num_choices, selected):
@@ -26,8 +30,8 @@ class Recommend:
             # returns the selected options when the base case (zero number of choices) is reached
             return selected
         else:
-            remaining_options = list(filter(lambda x: x['name'] not in selected, options))
-            chosen_option = remaining_options[randint(0, len(remaining_options) - 1)]['name']
+            remaining_options = list(filter(lambda x: x not in selected, options))
+            chosen_option = remaining_options[randint(0, len(remaining_options) - 1)]
             selected.append(chosen_option)
             return self.__make_recommendations(options, num_choices - 1, selected)
 
